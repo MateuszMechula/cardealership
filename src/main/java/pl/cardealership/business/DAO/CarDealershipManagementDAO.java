@@ -1,4 +1,4 @@
-package pl.cardealership.business.DAO.management;
+package pl.cardealership.business.DAO;
 
 import java.util.List;
 

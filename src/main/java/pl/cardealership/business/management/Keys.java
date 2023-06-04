@@ -3,7 +3,7 @@ package pl.cardealership.business.management;
 public interface Keys {
 
     enum InputDataGroup {
-        INIT
+        BUY_FIRST_TIME, BUY_AGAIN, INIT
     }
 
     enum Entity {
@@ -11,6 +11,7 @@ public interface Keys {
         MECHANIC,
         CAR,
         SERVICE,
-        PART
+        PART,
+        CUSTOMER
     }
 }

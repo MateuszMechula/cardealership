@@ -1,7 +1,7 @@
 package pl.cardealership.infrastructure.database.repository;
 
 import org.hibernate.Session;
-import pl.cardealership.business.DAO.management.CarDealershipManagementDAO;
+import pl.cardealership.business.DAO.CarDealershipManagementDAO;
 import pl.cardealership.infrastructure.configuration.HibernateUtil;
 
 import java.util.List;

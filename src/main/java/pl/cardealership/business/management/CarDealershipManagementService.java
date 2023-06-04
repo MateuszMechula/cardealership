@@ -1,7 +1,7 @@
 package pl.cardealership.business.management;
 
 import lombok.AllArgsConstructor;
-import pl.cardealership.business.DAO.management.CarDealershipManagementDAO;
+import pl.cardealership.business.DAO.CarDealershipManagementDAO;
 
 import java.util.List;
 
