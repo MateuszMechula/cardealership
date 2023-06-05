@@ -5,8 +5,11 @@ import org.junit.jupiter.api.*;
 import pl.cardealership.business.CarPurchaseService;
 import pl.cardealership.business.CarService;
 import pl.cardealership.business.CustomerService;
+import pl.cardealership.business.DAO.CarDAO;
+import pl.cardealership.business.DAO.CustomerDAO;
 import pl.cardealership.business.SalesmanService;
 import pl.cardealership.business.management.CarDealershipManagementService;
+import pl.cardealership.business.management.CarServiceRequestService;
 import pl.cardealership.business.management.FileDataPreparationService;
 import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.repository.CarDealershipManagementRepository;
@@ -20,20 +23,30 @@ public class CarDealershipTest {
 
     private CarDealershipManagementService carDealershipManagementService;
     private CarPurchaseService carPurchaseService;
+    private CarServiceRequestService carServiceRequestService;
 
 
     @BeforeEach
     void beforeEach() {
+        CarDAO carDAO = new CarRepository();
+        CustomerDAO customerDAO = new CustomerRepository();
+        FileDataPreparationService fileDataPreparationService = new FileDataPreparationService();
+        CarService carService = new CarService(carDAO);
+        CustomerService customerService = new CustomerService(customerDAO);
         this.carDealershipManagementService = new CarDealershipManagementService(
                 new CarDealershipManagementRepository(),
-                new FileDataPreparationService()
+                fileDataPreparationService
         );
         this.carPurchaseService = new CarPurchaseService(
-                new FileDataPreparationService(),
-                new CustomerService(new CustomerRepository()),
-                new CarService(new CarRepository()),
+                fileDataPreparationService,
+                customerService,
+                carService,
                 new SalesmanService(new SalesmanRepository())
         );
+        this.carServiceRequestService = new CarServiceRequestService(
+                fileDataPreparationService,
+                carService,
+                customerService);
     }
 
     @AfterAll
@@ -67,6 +80,7 @@ public class CarDealershipTest {
     @Order(4)
     void makeServiceRequests() {
         log.info("### RUNNING ORDER 4");
+        carServiceRequestService.requestService();
     }
 
     @Test

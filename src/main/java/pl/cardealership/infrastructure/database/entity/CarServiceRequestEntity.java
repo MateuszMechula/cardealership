@@ -24,7 +24,7 @@ public class CarServiceRequestEntity {
     private Integer carServiceRequestId;
 
     @Column(name = "car_service_request_number", unique = true)
-    private Integer carServiceRequestNumber;
+    private String carServiceRequestNumber;
 
     @Column(name = "received_date_time")
     private OffsetDateTime receivedDateTime;
