@@ -1,13 +1,17 @@
 package pl.cardealership.business;
 
+import ch.qos.logback.core.joran.event.SaxEventRecorder;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import pl.cardealership.business.DAO.CarDAO;
 import pl.cardealership.domain.CarServiceRequest;
+import pl.cardealership.infrastructure.database.entity.CarHistoryEntity;
 import pl.cardealership.infrastructure.database.entity.CarToBuyEntity;
 import pl.cardealership.infrastructure.database.entity.CarToServiceEntity;
 
 import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 public class CarService {
 
@@ -44,5 +48,17 @@ public class CarService {
                 .build();
 
         return carDAO.saveCarToService(carToService);
+    }
+
+    public void printCarHistory(String vin) {
+        CarHistoryEntity carHistoryByVin = carDAO.findCarHistoryByVin(vin);
+        log.info("###CAR HISTORY FOR VIN: [{}]", vin);
+        carHistoryByVin.getServiceRequests().forEach(this::printServiceRequest);
+    }
+
+    private void printServiceRequest(CarHistoryEntity.ServiceRequest serviceRequest) {
+        log.info("### SERVICE REQUEST [{}]", serviceRequest);
+        serviceRequest.services().forEach(service -> log.info("###SERVICE: [{}]", service));
+        serviceRequest.parts().forEach(part -> log.info("###PART: [{}]", part));
     }
 }

@@ -3,6 +3,7 @@ package pl.cardealership.business.management;
 import lombok.AllArgsConstructor;
 import pl.cardealership.business.CarService;
 import pl.cardealership.business.CustomerService;
+import pl.cardealership.business.DAO.CarServiceRequestDAO;
 import pl.cardealership.domain.CarServiceRequest;
 import pl.cardealership.infrastructure.database.entity.CarServiceRequestEntity;
 import pl.cardealership.infrastructure.database.entity.CarToBuyEntity;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -20,6 +22,7 @@ public class CarServiceRequestService {
     private final FileDataPreparationService fileDataPreparationService;
     private final CarService carService;
     private final CustomerService customerService;
+    private final CarServiceRequestDAO carServiceRequestDAO;
     public void requestService() {
         Map<Boolean, List<CarServiceRequest>> serviceRequests = fileDataPreparationService.createCarServiceRequests()
                 .stream()
@@ -86,5 +89,17 @@ public class CarServiceRequestService {
     private CarToServiceEntity findInCarToBuyAndSaveInCarToService(CarServiceRequest.Car car) {
         CarToBuyEntity carToBuy = carService.findCarToBuy(car.getVin());
         return carService.saveCarToService(carToBuy);
+    }
+
+    public CarServiceRequestEntity findAnyActiveServiceRequest(String carVin) {
+        Set<CarServiceRequestEntity> serviceRequests=  carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
+        if (serviceRequests.size() != 1) {
+            throw new RuntimeException(
+                    "There should be only one actived service reqeust at a time, car vin: [%s]".formatted(carVin));
+        }
+        return serviceRequests.stream()
+                .findAny()
+                .orElseThrow(() -> new RuntimeException(
+                        "Could not find any serviceRequests, car vin: [%s]".formatted(carVin)));
     }
 }

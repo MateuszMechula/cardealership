@@ -1,5 +1,6 @@
 package pl.cardealership.business.DAO;
 
+import pl.cardealership.infrastructure.database.entity.CarHistoryEntity;
 import pl.cardealership.infrastructure.database.entity.CarToBuyEntity;
 import pl.cardealership.infrastructure.database.entity.CarToServiceEntity;
 
@@ -11,4 +12,6 @@ public interface CarDAO {
     Optional<CarToBuyEntity> findCarToBuyByVin(String vin);
 
     CarToServiceEntity saveCarToService(CarToServiceEntity carToService);
+
+    CarHistoryEntity findCarHistoryByVin(String vin);
 }

@@ -1,6 +1,7 @@
 package pl.cardealership.business.management;
 
 
+import pl.cardealership.domain.CarServiceProcessingRequest;
 import pl.cardealership.domain.CarServiceRequest;
 import pl.cardealership.infrastructure.database.entity.*;
 
@@ -113,5 +114,26 @@ public class FileDataPreparationService {
                 .boxed()
                 .limit(3)
                 .collect(Collectors.toMap(grouped::get, i -> List.of(grouped.get(i + 1).split(";"))));
+    }
+
+    public List<CarServiceProcessingRequest> prepareServiceRequestsToProcess() {
+        return InputDataCache.getInputData(Keys.InputDataGroup.DO_THE_SERVICE, this::prepareMap)
+                .stream()
+                .map(this::createCarServiceRequestToProcess)
+                .toList();
+    }
+
+    private CarServiceProcessingRequest createCarServiceRequestToProcess(Map<String, List<String>> inputData) {
+        List<String> whats = inputData.get(Keys.Constants.WHAT.toString());
+        return CarServiceProcessingRequest.builder()
+                .mechanicPesel(inputData.get(Keys.Entity.MECHANIC.toString()).get(0))
+                .carVin(inputData.get(Keys.Entity.CAR.toString()).get(0))
+                .partSerialNumber(Optional.ofNullable(whats.get(0)).filter(value -> !value.isBlank()).orElse(null))
+                .partQuantity(Optional.ofNullable(whats.get(1)).filter(value -> !value.isBlank()).map(Integer::parseInt).orElse(null))
+                .serviceCode(whats.get(2))
+                .hours(Integer.parseInt(whats.get(3)))
+                .comment(whats.get(4))
+                .done(whats.get(5))
+                .build();
     }
 }
