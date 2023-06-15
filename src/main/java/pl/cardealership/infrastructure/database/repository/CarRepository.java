@@ -7,7 +7,6 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import pl.cardealership.business.DAO.CarDAO;
-import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.entity.*;
 
 import java.util.List;

@@ -1,7 +1,8 @@
-package pl.cardealership.business.management;
+package pl.cardealership.business;
 
 import lombok.AllArgsConstructor;
 import pl.cardealership.business.DAO.CarDealershipManagementDAO;
+import pl.cardealership.business.management.FileDataPreparationService;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class CarDealershipManagementService {
 
     public void purge() {
         carDealershipManagementDAO.purge();
+
     }
     public void init() {
         List<?> entities = fileDataPreparationService.prepareInitData();

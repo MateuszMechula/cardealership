@@ -2,7 +2,6 @@ package pl.cardealership.infrastructure.database.repository;
 
 import org.hibernate.Session;
 import pl.cardealership.business.DAO.MechanicDAO;
-import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.entity.MechanicEntity;
 
 import java.util.Objects;
@@ -17,7 +16,7 @@ public class MechanicRepository implements MechanicDAO {
             }
             session.beginTransaction();
 
-            String query = "SELECT se FROM MechanicEntity se WHERE se.pesel = :pesel";
+            String query = "SELECT se FROM MechanicJpaRepository se WHERE se.pesel = :pesel";
             Optional<MechanicEntity> result = session.createQuery(query, MechanicEntity.class)
                     .setParameter("pesel", pesel)
                     .uniqueResultOptional();

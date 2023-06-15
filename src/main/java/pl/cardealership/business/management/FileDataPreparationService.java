@@ -1,39 +1,15 @@
 package pl.cardealership.business.management;
 
 
-import pl.cardealership.domain.CarServiceProcessingRequest;
-import pl.cardealership.domain.CarServiceRequest;
 import pl.cardealership.infrastructure.database.entity.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class FileDataPreparationService {
 
 
-    public List<?> prepareInitData() {
-
-        List<SalesmanEntity> salesman = InputDataCache
-                .getInputData(Keys.InputDataGroup.INIT, Keys.Entity.SALESMAN, InputDataMapper::mapSalesman);
-
-        List<MechanicEntity> mechanics = InputDataCache
-                .getInputData(Keys.InputDataGroup.INIT, Keys.Entity.MECHANIC, InputDataMapper::mapMechanic);
-
-        List<CarToBuyEntity> cars = InputDataCache
-                .getInputData(Keys.InputDataGroup.INIT, Keys.Entity.CAR, InputDataMapper::mapCarToBuy);
-
-        List<ServiceEntity> services = InputDataCache
-                .getInputData(Keys.InputDataGroup.INIT, Keys.Entity.SERVICE, InputDataMapper::mapService);
-
-        List<PartEntity> parts = InputDataCache
-                .getInputData(Keys.InputDataGroup.INIT, Keys.Entity.PART, InputDataMapper::mapPart);
-
-        return Stream.of(salesman,mechanics,cars,services,parts)
-                .flatMap(Collection::stream)
-                .toList();
-    }
 
     public List<Map<String, List<String>>> prepareFirstTimePurchaseData() {
        return InputDataCache.getInputData(Keys.InputDataGroup.BUY_FIRST_TIME, this::prepareMap);

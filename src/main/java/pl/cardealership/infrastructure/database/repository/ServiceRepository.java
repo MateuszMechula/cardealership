@@ -2,7 +2,6 @@ package pl.cardealership.infrastructure.database.repository;
 
 import org.hibernate.Session;
 import pl.cardealership.business.DAO.ServiceDAO;
-import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.entity.ServiceEntity;
 
 import java.util.Objects;
@@ -17,7 +16,7 @@ public class ServiceRepository implements ServiceDAO {
             }
             session.beginTransaction();
 
-            String query = "SELECT se FROM ServiceEntity se WHERE se.serviceCode = :serviceCode";
+            String query = "SELECT se FROM ServiceJpaRepository se WHERE se.serviceCode = :serviceCode";
             Optional<ServiceEntity> result = session.createQuery(query, ServiceEntity.class)
                     .setParameter("serviceCode", serviceCode)
                     .uniqueResultOptional();

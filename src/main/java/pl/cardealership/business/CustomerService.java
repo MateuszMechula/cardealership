@@ -2,7 +2,6 @@ package pl.cardealership.business;
 
 import lombok.AllArgsConstructor;
 import pl.cardealership.business.DAO.CustomerDAO;
-import pl.cardealership.domain.CarServiceRequest;
 import pl.cardealership.infrastructure.database.entity.AddressEntity;
 import pl.cardealership.infrastructure.database.entity.CustomerEntity;
 

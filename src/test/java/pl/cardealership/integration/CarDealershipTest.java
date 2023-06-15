@@ -5,7 +5,6 @@ import org.junit.jupiter.api.*;
 import pl.cardealership.business.*;
 import pl.cardealership.business.DAO.*;
 import pl.cardealership.business.management.*;
-import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.repository.*;
 
 @Slf4j

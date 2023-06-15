@@ -1,0 +1,12 @@
+CREATE TABLE CAR_TO_BUY
+(
+    CAR_TO_BUY_ID SERIAL        NOT NULL,
+    VIN           VARCHAR(20)   NOT NULL,
+    BRAND         VARCHAR(32)   NOT NULL,
+    MODEL         VARCHAR(32)   NOT NULL,
+    YEAR          SMALLINT      NOT NULL,
+    COLOR         VARCHAR(32)   NOT NULL,
+    PRICE         NUMERIC(7, 2) NOT NULL,
+    PRIMARY KEY (CAR_TO_BUY_ID),
+    UNIQUE (VIN)
+);

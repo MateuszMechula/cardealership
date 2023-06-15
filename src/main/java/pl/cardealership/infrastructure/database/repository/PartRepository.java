@@ -2,7 +2,6 @@ package pl.cardealership.infrastructure.database.repository;
 
 import org.hibernate.Session;
 import pl.cardealership.business.DAO.PartDAO;
-import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.entity.PartEntity;
 
 import java.util.Objects;
@@ -17,7 +16,7 @@ public class PartRepository implements PartDAO {
             }
             session.beginTransaction();
 
-            String query = "SELECT se FROM PartEntity se WHERE se.serialNumber = :serialNumber";
+            String query = "SELECT se FROM PartJpaRepository se WHERE se.serialNumber = :serialNumber";
             Optional<PartEntity> result = session.createQuery(query, PartEntity.class)
                     .setParameter("serialNumber", serialNumber)
                     .uniqueResultOptional();

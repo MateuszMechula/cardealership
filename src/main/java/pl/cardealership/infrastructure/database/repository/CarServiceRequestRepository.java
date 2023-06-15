@@ -2,7 +2,6 @@ package pl.cardealership.infrastructure.database.repository;
 
 import org.hibernate.Session;
 import pl.cardealership.business.DAO.CarServiceRequestDAO;
-import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.entity.CarServiceRequestEntity;
 
 import java.util.HashSet;
@@ -19,7 +18,7 @@ public class CarServiceRequestRepository implements CarServiceRequestDAO {
             }
             session.beginTransaction();
             String query = """
-                    SELECT sr FROM CarServiceRequestEntity sr
+                    SELECT sr FROM CarServiceRequestJpaRepository sr
                     WHERE
                     sr.car.vin = :vin
                     AND sr.completedDateTime IS NULL

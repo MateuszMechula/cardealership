@@ -1,10 +1,8 @@
 package pl.cardealership.business;
 
-import ch.qos.logback.core.joran.event.SaxEventRecorder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.cardealership.business.DAO.CarDAO;
-import pl.cardealership.domain.CarServiceRequest;
 import pl.cardealership.infrastructure.database.entity.CarHistoryEntity;
 import pl.cardealership.infrastructure.database.entity.CarToBuyEntity;
 import pl.cardealership.infrastructure.database.entity.CarToServiceEntity;

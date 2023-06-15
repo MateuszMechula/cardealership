@@ -2,9 +2,7 @@ package pl.cardealership.infrastructure.database.repository;
 
 import org.hibernate.Session;
 import pl.cardealership.business.DAO.ServiceRequestProcessingDAO;
-import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.entity.CarServiceRequestEntity;
-import pl.cardealership.infrastructure.database.entity.PartEntity;
 import pl.cardealership.infrastructure.database.entity.ServiceMechanicEntity;
 import pl.cardealership.infrastructure.database.entity.ServicePartEntity;
 

@@ -1,10 +1,10 @@
-package pl.cardealership.business.management;
+package pl.cardealership.business;
 
 import lombok.AllArgsConstructor;
 import pl.cardealership.business.CarService;
 import pl.cardealership.business.CustomerService;
 import pl.cardealership.business.DAO.CarServiceRequestDAO;
-import pl.cardealership.domain.CarServiceRequest;
+import pl.cardealership.business.management.FileDataPreparationService;
 import pl.cardealership.infrastructure.database.entity.CarServiceRequestEntity;
 import pl.cardealership.infrastructure.database.entity.CarToBuyEntity;
 import pl.cardealership.infrastructure.database.entity.CarToServiceEntity;

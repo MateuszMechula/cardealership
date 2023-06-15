@@ -1,4 +1,4 @@
-package pl.cardealership.business.management;
+package pl.cardealership.business;
 
 import lombok.AllArgsConstructor;
 import pl.cardealership.business.DAO.ServiceDAO;

@@ -6,8 +6,7 @@ public interface Keys {
         BUY_FIRST_TIME,
         BUY_AGAIN,
         SERVICE_REQUEST,
-        DO_THE_SERVICE,
-        INIT
+        DO_THE_SERVICE
     }
 
     enum Entity {

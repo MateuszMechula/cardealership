@@ -2,7 +2,6 @@ package pl.cardealership.infrastructure.database.repository;
 
 import org.hibernate.Session;
 import pl.cardealership.business.DAO.CustomerDAO;
-import pl.cardealership.infrastructure.configuration.HibernateUtil;
 import pl.cardealership.infrastructure.database.entity.CustomerEntity;
 
 import java.util.Objects;
@@ -17,7 +16,7 @@ public class CustomerRepository implements CustomerDAO {
             }
             session.beginTransaction();
 
-            String query = "SELECT se FROM CustomerEntity se WHERE se.email = :email";
+            String query = "SELECT se FROM CustomerJpaRepository se WHERE se.email = :email";
             Optional<CustomerEntity> result = session.createQuery(query, CustomerEntity.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
