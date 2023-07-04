@@ -1,17 +1,22 @@
 package pl.cardealership.business;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import pl.cardealership.business.DAO.SalesmanDAO;
-import pl.cardealership.infrastructure.database.entity.SalesmanEntity;
+import pl.cardealership.domain.Salesman;
 
 import java.util.Optional;
 
+@Service
 @AllArgsConstructor
 public class SalesmanService {
 
     private final SalesmanDAO salesmanDAO;
-    public SalesmanEntity findSalesman(String pesel) {
-        final Optional<SalesmanEntity> salesmanByPesel = salesmanDAO.findByPesel(pesel);
+
+    @Transactional
+    public Salesman findSalesman(String pesel) {
+        final Optional<Salesman> salesmanByPesel = salesmanDAO.findByPesel(pesel);
         if (salesmanByPesel.isEmpty()) {
             throw new RuntimeException("Could not find Salesman by pesel: [%s]".formatted(pesel));
         }

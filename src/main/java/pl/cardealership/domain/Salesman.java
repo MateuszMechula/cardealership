@@ -1,17 +1,14 @@
 package pl.cardealership.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
 
-import java.util.Objects;
 import java.util.Set;
 
 
 @With
 @Value
 @Builder
-@EqualsAndHashCode(of = "salesmanId")
+@EqualsAndHashCode(of = "pesel")
 @ToString(of = {"salesmanId", "name", "surname", "pesel"})
 public class Salesman {
 

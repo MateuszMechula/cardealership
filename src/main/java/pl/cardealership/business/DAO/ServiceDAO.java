@@ -1,10 +1,10 @@
 package pl.cardealership.business.DAO;
 
-import pl.cardealership.infrastructure.database.entity.ServiceEntity;
+import pl.cardealership.domain.Service;
 
 import java.util.Optional;
 
 public interface ServiceDAO {
-    Optional<ServiceEntity> findByServiceCode(String serviceCode);
+    Optional<Service> findByServiceCode(String serviceCode);
 
 }

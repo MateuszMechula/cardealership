@@ -1,11 +1,6 @@
 package pl.cardealership.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
-import pl.cardealership.infrastructure.database.entity.CarServiceRequestEntity;
-
-import java.util.Objects;
 
 @With
 @Value

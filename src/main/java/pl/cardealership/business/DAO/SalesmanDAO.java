@@ -1,10 +1,10 @@
 package pl.cardealership.business.DAO;
 
-import pl.cardealership.infrastructure.database.entity.SalesmanEntity;
+import pl.cardealership.domain.Salesman;
 
 import java.util.Optional;
 
 public interface SalesmanDAO {
 
-    Optional<SalesmanEntity> findByPesel(String pesel);
+    Optional<Salesman> findByPesel(String pesel);
 }

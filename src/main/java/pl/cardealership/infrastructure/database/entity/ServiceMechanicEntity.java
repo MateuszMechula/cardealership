@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of = "serviceMechanicId")
 @ToString(of = {"serviceMechanicId", "hours", "comment"})
 @Builder
 @NoArgsConstructor
@@ -38,20 +39,4 @@ public class ServiceMechanicEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
     private ServiceEntity service;
-
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ServiceMechanicEntity that = (ServiceMechanicEntity) o;
-        return getServiceMechanicId() != null && Objects.equals(getServiceMechanicId(), that.getServiceMechanicId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

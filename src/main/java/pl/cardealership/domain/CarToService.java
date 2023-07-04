@@ -1,15 +1,14 @@
 package pl.cardealership.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
-import pl.cardealership.infrastructure.database.entity.CarServiceRequestEntity;
 
+import java.util.Objects;
 import java.util.Set;
 
 @With
 @Value
 @Builder
-@EqualsAndHashCode(of = "carToServiceId")
+@EqualsAndHashCode(of = "vin")
 @ToString(of = {"carToServiceId", "vin", "brand", "model", "year"})
 public class CarToService {
 
@@ -19,4 +18,12 @@ public class CarToService {
     String model;
     Integer year;
     Set<CarServiceRequest> carServiceRequests;
+
+    public Boolean carBoughtHere() {
+        return Objects.nonNull(vin)
+                && Objects.isNull(brand)
+                && Objects.isNull(model)
+                && Objects.isNull(year);
+
+    }
 }

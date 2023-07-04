@@ -1,46 +1,39 @@
 package pl.cardealership.business;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import pl.cardealership.business.DAO.CustomerDAO;
-import pl.cardealership.infrastructure.database.entity.AddressEntity;
-import pl.cardealership.infrastructure.database.entity.CustomerEntity;
+import pl.cardealership.domain.Customer;
 
 import java.util.Optional;
 
+@Service
 @AllArgsConstructor
 public class CustomerService {
 
     private final CustomerDAO customerDAO;
-    public void issueInvoice(CustomerEntity customer) {
+
+    @Transactional
+    public void issueInvoice(Customer customer) {
         customerDAO.issueInvoice(customer);
     }
 
-    public CustomerEntity findCustomer(String email) {
-        final Optional<CustomerEntity> customerByPesel = customerDAO.findByEmail(email);
+    @Transactional
+    public Customer findCustomer(String email) {
+        final Optional<Customer> customerByPesel = customerDAO.findByEmail(email);
         if (customerByPesel.isEmpty()) {
             throw new RuntimeException("Could not find Salesman by email: [%s]".formatted(email));
         }
         return customerByPesel.get();
     }
-
-    public void saveServiceRequest(CustomerEntity customer) {
+    @Transactional
+    public void saveServiceRequest(Customer customer) {
         customerDAO.saveServiceRequest(customer);
     }
 
-    public CustomerEntity saveCustomer(CarServiceRequest.Customer customer) {
-        CustomerEntity entity = CustomerEntity.builder()
-                .name(customer.getName())
-                .surname(customer.getSurname())
-                .phone(customer.getPhone())
-                .email(customer.getEmail())
-                .address(AddressEntity.builder()
-                        .country(customer.getAddress().getCountry())
-                        .city(customer.getAddress().getCity())
-                        .postalCode(customer.getAddress().getPostalCode())
-                        .address(customer.getAddress().getAddress())
-                        .build())
-                .build();
-
-        return customerDAO.saveCustomer(entity);
+    @Transactional
+    public Customer saveCustomer(Customer customer) {
+        return customerDAO.saveCustomer(customer);
     }
 }

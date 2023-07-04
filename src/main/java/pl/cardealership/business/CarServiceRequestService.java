@@ -1,14 +1,14 @@
 package pl.cardealership.business;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import pl.cardealership.business.CarService;
-import pl.cardealership.business.CustomerService;
+import org.springframework.stereotype.Service;
 import pl.cardealership.business.DAO.CarServiceRequestDAO;
 import pl.cardealership.business.management.FileDataPreparationService;
-import pl.cardealership.infrastructure.database.entity.CarServiceRequestEntity;
-import pl.cardealership.infrastructure.database.entity.CarToBuyEntity;
-import pl.cardealership.infrastructure.database.entity.CarToServiceEntity;
-import pl.cardealership.infrastructure.database.entity.CustomerEntity;
+import pl.cardealership.domain.CarServiceRequest;
+import pl.cardealership.domain.CarToBuy;
+import pl.cardealership.domain.CarToService;
+import pl.cardealership.domain.Customer;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 @AllArgsConstructor
 public class CarServiceRequestService {
     private final FileDataPreparationService fileDataPreparationService;
@@ -27,40 +28,43 @@ public class CarServiceRequestService {
         Map<Boolean, List<CarServiceRequest>> serviceRequests = fileDataPreparationService.createCarServiceRequests()
                 .stream()
                 .collect(Collectors.groupingBy(
-                        elem -> elem.getCar().shouldExistsInCarToBuy()));
+                        elem -> elem.getCar().carBoughtHere()));
 
         serviceRequests.get(true).forEach(this::saveServiceRequestsForExistingCar);
         serviceRequests.get(false).forEach(this::saveServiceRequestsForNewCar);
     }
 
     private void saveServiceRequestsForNewCar(CarServiceRequest request) {
-        CarToServiceEntity car = carService.findCarToService(request.getCar().getVin())
-                .orElse(findInCarToBuyAndSaveInCarToService(request.getCar()));
+        CarToService car = carService.saveCarToService(request.getCar());
+        Customer customer = customerService.saveCustomer(request.getCustomer());
 
-        CustomerEntity customer = customerService.findCustomer(request.getCustomer().getEmail());
-        CarServiceRequestEntity carServiceRequestEntity = buildCarServiceRequestEntity(request, car, customer);
-        customer.addServiceRequest(carServiceRequestEntity);
-        customerService.saveServiceRequest(customer);
+
+        CarServiceRequest carServiceRequest = buildCarServiceRequest(request, car, customer);
+        Set<CarServiceRequest> existingCarServiceRequests = customer.getCarServiceRequests();
+        existingCarServiceRequests.add(carServiceRequest);
+        customerService.saveServiceRequest(customer.withCarServiceRequests(existingCarServiceRequests));
     }
 
     private void saveServiceRequestsForExistingCar(CarServiceRequest request) {
 
-        CarToServiceEntity car = carService.saveCarToService(request.getCar());
-        CustomerEntity customer = customerService.saveCustomer(request.getCustomer());
+        CarToService car = carService.findCarToService(request.getCar().getVin())
+                .orElse(findInCarToBuyAndSaveInCarToService(request.getCar()));
+        Customer customer = customerService.findCustomer(request.getCustomer().getEmail());
 
-        CarServiceRequestEntity carServiceRequestEntity = buildCarServiceRequestEntity(request, car, customer);
-        customer.addServiceRequest(carServiceRequestEntity);
-        customerService.saveServiceRequest(customer);
+        CarServiceRequest carServiceRequest = buildCarServiceRequest(request, car, customer);
+        Set<CarServiceRequest> existingCarServiceRequests = customer.getCarServiceRequests();
+        existingCarServiceRequests.add(carServiceRequest);
+        customerService.saveServiceRequest(customer.withCarServiceRequests(existingCarServiceRequests));
     }
 
-    private CarServiceRequestEntity buildCarServiceRequestEntity
+    private CarServiceRequest buildCarServiceRequest
             (CarServiceRequest request,
-             CarToServiceEntity car,
-             CustomerEntity customer) {
+             CarToService car,
+             Customer customer) {
 
         OffsetDateTime when = OffsetDateTime.now();
 
-        return CarServiceRequestEntity.builder()
+        return CarServiceRequest.builder()
                 .carServiceRequestNumber(generateCarServiceRequestNumber(when))
                 .receivedDateTime(when)
                 .customerComment(request.getCustomerComment())
@@ -86,13 +90,15 @@ public class CarServiceRequestService {
         return new Random().nextInt(max - min) + min;
     }
 
-    private CarToServiceEntity findInCarToBuyAndSaveInCarToService(CarServiceRequest.Car car) {
-        CarToBuyEntity carToBuy = carService.findCarToBuy(car.getVin());
+
+    private CarToService findInCarToBuyAndSaveInCarToService(CarToService car) {
+        CarToBuy carToBuy = carService.findCarToBuy(car.getVin());
         return carService.saveCarToService(carToBuy);
     }
 
-    public CarServiceRequestEntity findAnyActiveServiceRequest(String carVin) {
-        Set<CarServiceRequestEntity> serviceRequests=  carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
+    @Transactional
+    public CarServiceRequest findAnyActiveServiceRequest(String carVin) {
+        Set<CarServiceRequest> serviceRequests=  carServiceRequestDAO.findActiveServiceRequestsByCarVin(carVin);
         if (serviceRequests.size() != 1) {
             throw new RuntimeException(
                     "There should be only one actived service reqeust at a time, car vin: [%s]".formatted(carVin));

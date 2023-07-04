@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of = "addressId")
 @ToString(of = {"addressId", "country", "city", "postalCode", "address"})
 @Builder
 @NoArgsConstructor
@@ -36,16 +37,4 @@ public class AddressEntity {
     @OneToOne(mappedBy = "address")
     private CustomerEntity customer;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        AddressEntity that = (AddressEntity) o;
-        return getAddressId() != null && Objects.equals(getAddressId(), that.getAddressId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

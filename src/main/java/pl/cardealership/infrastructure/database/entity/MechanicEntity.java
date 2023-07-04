@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of = "mechanicId")
 @ToString(of = {"mechanicId", "name", "surname", "pesel"})
 @Builder
 @NoArgsConstructor
@@ -33,18 +34,4 @@ public class MechanicEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "mechanic")
     private Set<ServiceMechanicEntity> serviceMechanics;
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        MechanicEntity that = (MechanicEntity) o;
-        return getMechanicId() != null && Objects.equals(getMechanicId(), that.getMechanicId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

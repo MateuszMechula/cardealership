@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.ToString;
 import lombok.Value;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public class CarHistory {
 
     String carVin;
-    List<CarServiceRequest> serviceRequests;
+    List<CarServiceRequest> carServiceRequests;
 
     @Value
     @Builder

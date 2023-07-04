@@ -10,6 +10,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of = "invoiceId")
 @ToString(of = {"invoiceId", "invoiceNumber", "dateTime"})
 @Builder
 @NoArgsConstructor
@@ -41,17 +42,4 @@ public class InvoiceEntity {
     @JoinColumn(name = "salesman_id")
     private SalesmanEntity salesman;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        InvoiceEntity that = (InvoiceEntity) o;
-        return getInvoiceId() != null && Objects.equals(getInvoiceId(), that.getInvoiceId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }
